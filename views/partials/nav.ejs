@@ -1,6 +1,73 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Blogify</a>
+<style>
+  .navbar {
+    background-color: #ffffff;
+    padding: 0.5rem 0;
+  }
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #000000 !important;
+    transition: color 0.3s ease;
+  }
+  .navbar-brand:hover {
+    color: #1a8917 !important;
+  }
+  .navbar-nav .nav-link {
+    color: #292929 !important;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+  .navbar-nav .nav-link:hover {
+    color: #1a8917 !important;
+  }
+  .navbar-nav .nav-link.active {
+    color: #1a8917 !important;
+    font-weight: bold;
+  }
+  .dropdown-menu {
+    background-color: #ffffff;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .dropdown-item {
+    color: #292929;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  .dropdown-item:hover {
+    background-color: #f0f0f0;
+    color: #1a8917;
+  }
+  .navbar-toggler {
+    border-color: #1a8917;
+  }
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(26, 137, 23, 0.85)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+  .btn-outline-success {
+    color: #1a8917;
+    border-color: #1a8917;
+    border-radius: 99px;
+    padding: 0.375rem 1rem;
+  }
+  .btn-outline-success:hover {
+    color: #ffffff;
+    background-color: #1a8917;
+    border-color: #1a8917;
+  }
+  .alert {
+    border-radius: 0;
+    border: none;
+    background-color: #ffc107;
+    color: #000000;
+    padding: 1rem;
+    margin-bottom: 0;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container">
+    <a class="navbar-brand" href="/">Narratum</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -13,10 +80,14 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <% if (locals.user) { %>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="">Home</a>
+          <a class="nav-link" href="/blog/add-new">Write</a>
         </li>
+        <% } %>
+      </ul>
+      <ul class="navbar-nav">
         <% if (locals.user) { %>
         <li class="nav-item">
           <a class="nav-link" href="/blog/add-new">Add Blog</a>
@@ -32,19 +103,23 @@
           >
             <%= locals.user.fullName %>
           </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="user/logout">Log out</a></li>
+          <ul
+            class="dropdown-menu dropdown-menu-end"
+            aria-labelledby="navbarDropdownMenuLink"
+          >
+            <li><a class="dropdown-item" href="/user/profile">Profile</a></li>
+            <li><a class="dropdown-item" href="/user/settings">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item" href="/user/logout">Sign out</a></li>
           </ul>
         </li>
-        <% }else { %>
+        <% } else { %>
         <li class="nav-item">
-          <a class="nav-link" href="/user/signup">Create Account</a>
+          <a class="nav-link" href="/user/signin">Sign In</a>
         </li>
-
         <li class="nav-item">
-          <a class="nav-link" href="/user/signin">Signin</a>
+          <a class="btn btn-outline-success" href="/user/signup">Get started</a>
         </li>
-
         <% } %>
       </ul>
     </div>
@@ -52,8 +127,7 @@
 </nav>
 
 <% if(locals.error){ %>
-<div class="container mt-4">
-  <div class="alert alert-danger" role="alert"><%= locals.error %></div>
+<div class="alert" role="alert">
+  <div class="container"><%= locals.error %></div>
 </div>
-
 <% } %>

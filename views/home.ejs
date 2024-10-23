@@ -2,21 +2,112 @@
 <html lang="en">
   <head>
     <%- include("./partials/head") %>
-    <title>Homepage</title>
+    <title>Blogify - Discover great stories</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+          "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+          "Helvetica Neue", sans-serif;
+        background-color: #ffffff;
+        color: #292929;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+      }
+      .nav-container {
+        border-bottom: 1px solid #f0f0f0;
+        padding: 1rem 0;
+      }
+      .main-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      .blog-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 40px;
+      }
+      .blog-card {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 1px solid #f0f0f0;
+        padding-bottom: 20px;
+        transition: transform 0.3s ease;
+      }
+      .blog-card:hover {
+        transform: translateY(-5px);
+      }
+      .blog-card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        margin-bottom: 16px;
+      }
+      .blog-card-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .blog-card-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: #292929;
+        margin-bottom: 8px;
+        text-decoration: none;
+      }
+      .blog-card-title:hover {
+        text-decoration: underline;
+      }
+      .blog-card-excerpt {
+        font-size: 16px;
+        color: #757575;
+        margin-bottom: 16px;
+        flex-grow: 1;
+      }
+      .blog-card-author {
+        font-size: 14px;
+        color: #292929;
+      }
+      .blog-card-date {
+        font-size: 14px;
+        color: #757575;
+      }
+      @media (max-width: 768px) {
+        .blog-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <%- include('./partials/nav') %>
-    <div class="container mt-3 row row-cols-4">
-      <% blogs.forEach(blog => { %>
-      <div class="card" style="width: 18rem">
-        <img src="<%= blog.coverImageURL %>" class="card-img-top" alt="..." />
-        <div class="card-body">
-          <h5 class="card-title"><%= blog.title %></h5>
-          <a href="/blog/<%= blog._id %>" class="btn btn-primary">View</a>
-        </div>
-      </div>
+    <div class="nav-container"><%- include('./partials/nav') %></div>
 
-      <% }) %>
+    <div class="main-container">
+      <div class="blog-grid">
+        <% blogs.forEach(blog => { %>
+        <article class="blog-card">
+          <img src="<%= blog.coverImageURL %>" alt="<%= blog.title %>" />
+          <div class="blog-card-content">
+            <a href="/blog/<%= blog._id %>" class="blog-card-title"
+              ><%= blog.title %></a
+            >
+            <p class="blog-card-excerpt">
+              <%= blog.body.substring(0, 100) %>...
+            </p>
+            <div>
+              <span class="blog-card-author"
+                ><%= blog.createdBy.fullName %></span
+              >
+              <span class="blog-card-date">
+                · <%= new Date(blog.createdAt).toLocaleDateString('en-US', {
+                month: 'short', day: 'numeric' }) %></span
+              >
+            </div>
+          </div>
+        </article>
+        <% }) %>
+      </div>
     </div>
 
     <%- include('./partials/script') %>
